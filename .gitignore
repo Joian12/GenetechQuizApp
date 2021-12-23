@@ -89,7 +89,6 @@ ExportedObj/
 *.ttf
 *.opendb
 *.VC.db
-*.meta
 *.cache
 *.log
 *.bin
