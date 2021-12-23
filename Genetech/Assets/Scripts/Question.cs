@@ -6,13 +6,17 @@ using TMPro;
 
 public class Question : MonoBehaviour
 {   
+    public int questionNumber;
+    public bool isOpen;
+    public Question TEST;
     public AllStats allStats;
     public GameObject correct, wrong, locked, questionnaire, allQuestion, correctGO, wrongGO;
     public TextMeshProUGUI question, option1, option2, option3, option4, wrongAnswerText, solutionForWrong;
-    public TextMeshProUGUI  points, hints;
+    public TextMeshProUGUI  points, hints, anotherOne;
     public Button a, b, c, d, nextWrong, nextCorrect;
     public AnswerOption theAnswer;
     public CheckAnswer checkAnswer;
+    public Question[] allQuestions;
     [TextArea]
     public string question_, option1_, option2_, option3_, option4_, solutionForWrong_;
     private void Start() {
@@ -21,14 +25,14 @@ public class Question : MonoBehaviour
         option2 = questionnaire.transform.GetChild(3).GetComponentInChildren<TextMeshProUGUI>();
         option3 = questionnaire.transform.GetChild(4).GetComponentInChildren<TextMeshProUGUI>();
         option4 = questionnaire.transform.GetChild(5).GetComponentInChildren<TextMeshProUGUI>();
-
-        ///setting GO
+        allQuestions = FindObjectsOfType<Question>();
+        isOpen = (questionNumber == 1);
         questionnaire.SetActive(false);
-        //answer.SetActive(false);
     }
 
     public void OpenQuestion(){
-        
+        if(!isOpen)
+            return;
         questionnaire.SetActive(true);
         wrongGO.SetActive(true);
         correctGO.SetActive(true);
@@ -107,7 +111,7 @@ public class Question : MonoBehaviour
             RemoveNextButtons();
             wrongGO.SetActive(false);
             correctGO.SetActive(false);
-            //allQuestion.SetActive(true);
+            CheckNextQuestion();
 
         }else{
             correct.SetActive(false);
@@ -116,7 +120,18 @@ public class Question : MonoBehaviour
             RemoveNextButtons();
             wrongGO.SetActive(false);
             correctGO.SetActive(false);
-            //allQuestion.SetActive(true);
+            CheckNextQuestion();
+        }
+    }
+
+    public void CheckNextQuestion(){
+        int num = questionNumber+1;
+        for (int i = 0; i < allQuestions.Length; i++)
+        {
+            if(num == allQuestions[i].questionNumber){
+                allQuestions[i].locked.SetActive(false);
+                allQuestions[i].isOpen = true;
+            }       
         }
     }
 
